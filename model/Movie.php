@@ -3,8 +3,8 @@
 class Movie
 {
     private $db;
-    public function __construct() { 
-        $this->db = db::getInstance();
+    public function __construct($db) { 
+        $this->db =$db;
     }
     
     /*
@@ -40,7 +40,8 @@ class Movie
     public function getAllMovies()
     {
         $query = $this->db->prepare("SELECT * FROM movie ORDER BY title");
-        $query->execute();   
+        $query->execute();  
+        if($query->rowCount() <= 0)  return false;
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
  
