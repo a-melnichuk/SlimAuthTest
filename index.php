@@ -120,72 +120,36 @@ $app->post('/registration', function ($request, $response, $args) {
 
 $app->post('/login', function ($request, $response, $args) {
 
-
-
     $data = $request->getParsedBody();
-
     $user = new User(db::getInstance());    
-
     $result = $user->checkUser($data['username'], $data['password']);
-
     if($result === false)
-
     {
-
-        $response = $response->withStatus(404);
-
-        echo json_encode( array('error'=> array('message' => 'Wrong login information.' ) ) );   
-
+        $response->write( json_encode( array('error'=> array('message' => 'Wrong login information.'))));   
     }
-
     else
-
     {  
-
-        echo json_encode( array( 'token'=> $result ) );   
-
+        $response->write(json_encode( array( 'token'=> $result ) ) );   
     }
-
     return $response;
-
     
-
 });
 
 
-
-
-
 $app->get('/movies', function ($request, $response, $args) {
-
     $movie = new Movie(db::getInstance());
-
     $result = $movie->getAllMovies();
 
-
-
     if($result === false)
-
     {
-
-        $response = $response->withStatus(404);
-
-        echo json_encode( array('error'=> array('message' => 'No records found.' ) ) );
-
+       $response->write( json_encode( array('error'=> array('message' => 'No records found.' ) ) ) );
     }
-
     else
-
     {
-
-        echo json_encode($result);
-
+        $response->write(json_encode($result));
     }
-
     return $response;
-
 })->add($auth_mw);
-
 
 $app->get('/catmail/{email}', function ($request, $response, $args) {
     
